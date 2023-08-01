@@ -18,6 +18,8 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
         resources.qrc
+        gallerywidget.h gallerywidget.cpp gallerywidget.ui
+        imagewidget.h imagewidget.cpp imagewidget.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
