@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         imagewidget.h imagewidget.cpp imagewidget.ui
 )
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ImageViewer
         MANUAL_FINALIZATION

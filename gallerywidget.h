@@ -2,6 +2,7 @@
 #define GALLERYWIDGET_H
 
 #include <QWidget>
+#include <QStringListModel>
 
 namespace Ui {
 class GalleryWidget;
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::GalleryWidget *ui;
+    QStringListModel* mListModel;
 };
 
 #endif // GALLERYWIDGET_H
