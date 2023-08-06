@@ -19,7 +19,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         resources.qrc
         gallerywidget.h gallerywidget.cpp gallerywidget.ui
-        imagewidget.h imagewidget.cpp imagewidget.ui
+        imagedelegate.h imagedelegate.cpp
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,4 +1,5 @@
 #include "gallerywidget.h"
+#include "imagedelegate.h"
 #include "ui_gallerywidget.h"
 
 GalleryWidget::GalleryWidget(QWidget *parent) :
@@ -13,6 +14,7 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
     mListModel->setStringList(list);
 
     ui->listView->setModel(mListModel);
+    ui->listView->setItemDelegate(new ImageDelegate(this));
 }
 
 GalleryWidget::~GalleryWidget()
