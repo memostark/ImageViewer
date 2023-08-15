@@ -19,6 +19,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void setFolderPath();
+
 private:
     Ui::MainWindow *ui;
 };
