@@ -19,6 +19,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    void folderChanged(const QString& newPath);
+
 private slots:
     void setFolderPath();
 

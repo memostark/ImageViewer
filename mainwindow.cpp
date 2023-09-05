@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->folderBtn, &QPushButton::clicked,
             this, &MainWindow::setFolderPath);
+    connect(this, &MainWindow::folderChanged,
+            ui->galleryWidget, &GalleryWidget::updateList);
 }
 
 MainWindow::~MainWindow()
@@ -26,4 +28,8 @@ void MainWindow::setFolderPath(){
                                                           "Pick a directory",
                                                           QDir::homePath(),
                                                           QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!directory.isEmpty()){
+        ui->pathLabel->setText(directory);
+        emit folderChanged(directory);
+    }
 }

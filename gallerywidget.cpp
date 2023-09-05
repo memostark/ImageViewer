@@ -21,3 +21,7 @@ GalleryWidget::~GalleryWidget()
 {
     delete ui;
 }
+
+void GalleryWidget::updateList(const QString& folderPath) {
+    qDebug() << "Update gallery list called" << folderPath;
+}

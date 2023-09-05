@@ -16,6 +16,9 @@ public:
     explicit GalleryWidget(QWidget *parent = nullptr);
     ~GalleryWidget();
 
+public slots:
+    void updateList(const QString& folderPath);
+
 private:
     Ui::GalleryWidget *ui;
     QStringListModel* mListModel;
