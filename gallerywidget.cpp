@@ -2,6 +2,9 @@
 #include "imagedelegate.h"
 #include "ui_gallerywidget.h"
 
+#include <filesystem>
+namespace fs = std::filesystem;
+
 GalleryWidget::GalleryWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GalleryWidget),
@@ -24,4 +27,12 @@ GalleryWidget::~GalleryWidget()
 
 void GalleryWidget::updateList(const QString& folderPath) {
     qDebug() << "Update gallery list called" << folderPath;
+    QStringList list;
+    // load the urls and update the listmodel
+    for (const auto & entry : fs::directory_iterator(folderPath.toStdString())) {
+        qDebug() << entry.path().string();
+        list << QString::fromStdString(entry.path().string());
+    }
+
+    mListModel->setStringList(list);
 }
