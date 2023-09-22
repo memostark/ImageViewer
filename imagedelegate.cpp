@@ -14,11 +14,13 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 {
     painter->save();
 
-    QPixmap original("://res/placeholder-image.png");
+    QString path = index.model()->data(index, Qt::DisplayRole).toString();
+
+    QPixmap original(path);
     int columnWidth = option.rect.width();
     QSize size;
     if (original.width() > columnWidth) {
-        float ratio = original.width() / original.height();
+        float ratio = static_cast<float>(original.width()) / static_cast<float>(original.height());
         int newHeight = columnWidth / ratio;
         size = QSize(columnWidth, newHeight);
     } else {
@@ -27,11 +29,6 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     QPixmap pixmap = original.scaled(size);
     painter->drawPixmap(option.rect.x(), option.rect.y(), pixmap);
-
-
-    QRect textRect(option.rect);
-    QString text = index.model()->data(index, Qt::DisplayRole).toString();
-    painter->drawText(textRect, Qt::AlignLeft, text);
 
     painter->restore();
 }
