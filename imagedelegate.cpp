@@ -1,8 +1,7 @@
 #include "imagedelegate.h"
 
 #include <QPainter>
-
-const int height = 50;
+#include <QImageReader>
 
 ImageDelegate::ImageDelegate(QObject *parent)
     : QStyledItemDelegate{parent}
@@ -35,8 +34,11 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
 QSize ImageDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QPixmap original("://res/placeholder-image.png");
-    float ratio = original.width() / original.height();
+    QString path = index.model()->data(index, Qt::DisplayRole).toString();
+    QImageReader reader(path);
+    QSize original = reader.size();
+
+    float ratio = static_cast<float>(original.width()) / static_cast<float>(original.height());;
     int newHeight = option.rect.width() / ratio;
     return QSize(option.rect.width(), newHeight);
 }
