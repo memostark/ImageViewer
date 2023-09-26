@@ -1,6 +1,7 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "qsettings.h"
 
 #include <QFileDialog>
 
@@ -15,6 +16,14 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::setFolderPath);
     connect(this, &MainWindow::folderChanged,
             ui->galleryWidget, &GalleryWidget::updateList);
+
+    QSettings settings;
+    QString path = settings.value("main_path").toString();
+    qDebug() << "Saved path:" << path;
+    if (!path.isNull()) {
+        ui->pathLabel->setText(path);
+        emit folderChanged(path);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -31,5 +40,7 @@ void MainWindow::setFolderPath(){
     if (!directory.isEmpty()){
         ui->pathLabel->setText(directory);
         emit folderChanged(directory);
+        QSettings settings;
+        settings.setValue("main_path", directory);
     }
 }
