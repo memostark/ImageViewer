@@ -2,6 +2,8 @@
 #include "imagedelegate.h"
 #include "ui_gallerywidget.h"
 
+#include <QScrollBar>
+
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -18,6 +20,9 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
 
     ui->listView->setModel(mListModel);
     ui->listView->setItemDelegate(new ImageDelegate(this));
+
+    ui->listView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->listView ->verticalScrollBar()->setSingleStep(25);
 }
 
 GalleryWidget::~GalleryWidget()
