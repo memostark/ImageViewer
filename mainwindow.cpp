@@ -24,6 +24,26 @@ MainWindow::MainWindow(QWidget *parent)
         ui->pathLabel->setText(path);
         emit folderChanged(path);
     }
+
+
+    // Set the saved view preference
+    QButtonGroup* group = ui->viewsButtonGroup;
+    ui->listViewRadioBtn->setChecked(true); // default preference
+    QString viewType = settings.value("selected_view_type", "").toString();
+    if (!viewType.isEmpty()) {
+        QList<QAbstractButton *> buttons = group->buttons();
+        for (QAbstractButton * button : buttons)
+            if (button->text() == viewType)
+                button->setChecked(true);
+    }
+
+    connect(group, &QButtonGroup::buttonClicked,
+            [this, group](QAbstractButton *button)
+            {
+                qDebug() << group->id(button);
+                QSettings settings;
+                settings.setValue("selected_view_type", button->text());
+            });
 }
 
 MainWindow::~MainWindow()
