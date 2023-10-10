@@ -1,5 +1,7 @@
 #include "gallerywidget.h"
 #include "imagedelegate.h"
+#include "qlistview.h"
+#include <QResizeEvent>
 #include "ui_gallerywidget.h"
 
 #include <QScrollBar>
@@ -23,6 +25,15 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
 
     ui->listView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listView ->verticalScrollBar()->setSingleStep(25);
+
+}
+
+void GalleryWidget::resizeEvent(QResizeEvent *event) {
+    QListView* listView = ui->listView;
+    realListWidth = listView->width() - listView->verticalScrollBar()->width();
+
+    qDebug() << "List width:" << listView->width();
+    qDebug() << "Scrollbar width:" << listView->verticalScrollBar()->width();
 }
 
 GalleryWidget::~GalleryWidget()
@@ -40,4 +51,19 @@ void GalleryWidget::updateList(const QString& folderPath) {
     }
 
     mListModel->setStringList(list);
+}
+
+void GalleryWidget::setLayoutType(const QString& layoutType) {
+    QListView* listView = ui->listView;
+
+    if (layoutType == "Grid view") {
+        listView->setFlow(QListView::LeftToRight);
+        listView->setViewMode(QListView::IconMode);
+        int size = realListWidth / 3 - 1;
+        listView->setGridSize(QSize(size, size));
+    } else {
+        listView->setFlow(QListView::TopToBottom);
+        listView->setViewMode(QListView::ListMode);
+        listView->setGridSize(QSize(-1, -1));
+    }
 }

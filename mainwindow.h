@@ -21,6 +21,7 @@ public:
 
 signals:
     void folderChanged(const QString& newPath);
+    void viewTypeChanged(const QString& viewType);
 
 private slots:
     void setFolderPath();

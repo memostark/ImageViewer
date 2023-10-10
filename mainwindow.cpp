@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::setFolderPath);
     connect(this, &MainWindow::folderChanged,
             ui->galleryWidget, &GalleryWidget::updateList);
+    connect(this, &MainWindow::viewTypeChanged,
+            ui->galleryWidget, &GalleryWidget::setLayoutType);
 
     QSettings settings;
     QString path = settings.value("main_path").toString();
@@ -41,8 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
             [this, group](QAbstractButton *button)
             {
                 qDebug() << group->id(button);
+                auto text = button->text();
                 QSettings settings;
-                settings.setValue("selected_view_type", button->text());
+                settings.setValue("selected_view_type", text);
+                emit viewTypeChanged(text);
             });
 }
 
