@@ -2,6 +2,7 @@
 #include "imagedelegate.h"
 #include "qlistview.h"
 #include <QResizeEvent>
+#include "qsettings.h"
 #include "ui_gallerywidget.h"
 
 #include <QScrollBar>
@@ -31,6 +32,11 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
 void GalleryWidget::resizeEvent(QResizeEvent *event) {
     QListView* listView = ui->listView;
     realListWidth = listView->width() - listView->verticalScrollBar()->width();
+
+    QSettings settings;
+    QString viewType = settings.value("selected_view_type", "").toString();
+    if(viewType.isEmpty()) viewType = "List view";
+    setLayoutType(viewType);
 
     qDebug() << "List width:" << listView->width();
     qDebug() << "Scrollbar width:" << listView->verticalScrollBar()->width();

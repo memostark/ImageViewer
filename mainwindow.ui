@@ -82,6 +82,9 @@
      </attribute>
     </widget>
     <widget class="QRadioButton" name="collageViewRadioBtn">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
