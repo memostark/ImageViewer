@@ -52,8 +52,10 @@ void GalleryWidget::updateList(const QString& folderPath) {
     QStringList list;
     // load the urls and update the listmodel
     for (const auto & entry : fs::directory_iterator(folderPath.toStdString())) {
-        qDebug() << entry.path().string();
-        list << QString::fromStdString(entry.path().string());
+        if (!entry.is_directory()) {
+            qDebug() << entry.path().string();
+            list << QString::fromStdString(entry.path().string());
+        }
     }
 
     mListModel->setStringList(list);
