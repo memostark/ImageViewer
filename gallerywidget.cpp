@@ -1,5 +1,6 @@
 #include "gallerywidget.h"
 #include "imagedelegate.h"
+#include "qimagereader.h"
 #include "qlistview.h"
 #include <QResizeEvent>
 #include "qsettings.h"
@@ -53,8 +54,13 @@ void GalleryWidget::updateList(const QString& folderPath) {
     // load the urls and update the listmodel
     for (const auto & entry : fs::directory_iterator(folderPath.toStdString())) {
         if (!entry.is_directory()) {
-            qDebug() << entry.path().string();
-            list << QString::fromStdString(entry.path().string());
+            auto path = QString::fromStdString(entry.path().string());
+            QImageReader reader(path);
+
+            if(!reader.format().isEmpty()){
+                qDebug() << path;
+                list << path;
+            }
         }
     }
 
