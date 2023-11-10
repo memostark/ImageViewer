@@ -16,15 +16,7 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QString path = index.model()->data(index, Qt::DisplayRole).toString();
 
     QPixmap original(path);
-    int columnWidth = option.rect.width();
-    QSize size;
-    if (original.width() > columnWidth) {
-        float ratio = static_cast<float>(original.width()) / static_cast<float>(original.height());
-        int newHeight = columnWidth / ratio;
-        size = QSize(columnWidth, newHeight);
-    } else {
-        size = QSize(original.width(), original.height());
-    }
+    QSize size = calculateSize(option.rect.width(), original.size());
 
     QPixmap pixmap = original.scaled(size);
     painter->drawPixmap(option.rect.x(), option.rect.y(), pixmap);
@@ -38,7 +30,18 @@ QSize ImageDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     QImageReader reader(path);
     QSize original = reader.size();
 
-    float ratio = static_cast<float>(original.width()) / static_cast<float>(original.height());;
-    int newHeight = option.rect.width() / ratio;
-    return QSize(option.rect.width(), newHeight);
+    return calculateSize(option.rect.width(), original);
+}
+
+QSize ImageDelegate::calculateSize(int columnWidth, QSize imageSize) const {
+    QSize size;
+    if (imageSize.width() > columnWidth) {
+        float ratio = static_cast<float>(imageSize.width()) / static_cast<float>(imageSize.height());;
+        int newHeight = columnWidth / ratio;
+        size = QSize(columnWidth, newHeight);
+    } else {
+        size = QSize(imageSize.width(), imageSize.height());
+    }
+
+    return size;
 }
