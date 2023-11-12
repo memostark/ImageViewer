@@ -75,9 +75,16 @@ void GalleryWidget::setLayoutType(const QString& layoutType) {
         listView->setViewMode(QListView::IconMode);
         int size = realListWidth / 3 - 1;
         listView->setGridSize(QSize(size, size));
+        listView->setWrapping(true);
+    } else if (layoutType == "Collage view") {
+        listView->setViewMode(QListView::ListMode);
+        listView->setGridSize(QSize(-1, -1));
+        listView->setFlow(QListView::LeftToRight);
+        listView->setWrapping(true);
     } else {
         listView->setFlow(QListView::TopToBottom);
         listView->setViewMode(QListView::ListMode);
         listView->setGridSize(QSize(-1, -1));
+        ui->listView->setWrapping(false);
     }
 }
