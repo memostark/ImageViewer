@@ -26,11 +26,8 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
 QSize ImageDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QString path = index.model()->data(index, Qt::DisplayRole).toString();
-    QImageReader reader(path);
-    QSize original = reader.size();
-
-    return calculateSize(option.rect.width(), original);
+    QSize size = index.model()->data(index, Qt::SizeHintRole).value<QSize>();
+    return calculateSize(option.rect.width(), size);
 }
 
 QSize ImageDelegate::calculateSize(int columnWidth, QSize imageSize) const {

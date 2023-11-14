@@ -1,6 +1,7 @@
 #ifndef GALLERYWIDGET_H
 #define GALLERYWIDGET_H
 
+#include "imagemodel.h"
 #include <QWidget>
 #include <QStringListModel>
 
@@ -22,7 +23,7 @@ public slots:
 
 private:
     Ui::GalleryWidget *ui;
-    QStringListModel* mListModel;
+    ImageModel* mListModel;
 
     int realListWidth;
 

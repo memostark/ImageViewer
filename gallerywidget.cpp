@@ -14,13 +14,9 @@ namespace fs = std::filesystem;
 GalleryWidget::GalleryWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GalleryWidget),
-    mListModel(new QStringListModel())
+    mListModel(new ImageModel())
 {
     ui->setupUi(this);
-
-    QStringList list;
-    list << "Test item a" << "Test item b" << "Test item c";
-    mListModel->setStringList(list);
 
     ui->listView->setModel(mListModel);
     ui->listView->setItemDelegate(new ImageDelegate(this));
@@ -50,7 +46,7 @@ GalleryWidget::~GalleryWidget()
 
 void GalleryWidget::updateList(const QString& folderPath) {
     qDebug() << "Update gallery list called" << folderPath;
-    QStringList list;
+    std::vector<Image*> list;
     // load the urls and update the listmodel
     for (const auto & entry : fs::directory_iterator(folderPath.toStdString())) {
         if (!entry.is_directory()) {
@@ -59,12 +55,14 @@ void GalleryWidget::updateList(const QString& folderPath) {
 
             if(!reader.format().isEmpty()){
                 qDebug() << path;
-                list << path;
+                QImageReader reader(path);
+                QSize original = reader.size();
+                list.push_back(new Image(entry.path().string(), original.width(), original.height()));
             }
         }
     }
 
-    mListModel->setStringList(list);
+    mListModel->setImageList(list);
 }
 
 void GalleryWidget::setLayoutType(const QString& layoutType) {
