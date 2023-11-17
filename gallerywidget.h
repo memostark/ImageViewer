@@ -24,10 +24,15 @@ public slots:
 private:
     Ui::GalleryWidget *ui;
     ImageModel* mListModel;
+    std::vector<Image*> rawList;
 
     int realListWidth;
 
     void resizeEvent(QResizeEvent *event);
+    void calculateCollageSizes(std::vector<Image*>& list);
+    Image* updateSize (Image* image);
+    float getAspectRatio(QSize& size);
+    void normalizeHeights(std::vector<Image *>& images, int count, int startIndex, float height);
 };
 
 #endif // GALLERYWIDGET_H
