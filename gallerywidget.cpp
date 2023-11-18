@@ -32,9 +32,10 @@ void GalleryWidget::resizeEvent(QResizeEvent *event) {
     realListWidth = listView->width() - listView->verticalScrollBar()->width();
 
     QSettings settings;
-    QString viewType = settings.value("selected_view_type", "").toString();
-    if(viewType.isEmpty()) viewType = "List view";
-    setLayoutType(viewType);
+    QString path = settings.value("main_path").toString();
+    if (!path.isNull()) {
+        updateList(path);
+    }
 
     qDebug() << "List width:" << listView->width();
     qDebug() << "Scrollbar width:" << listView->verticalScrollBar()->width();
@@ -62,7 +63,10 @@ void GalleryWidget::updateList(const QString& folderPath) {
         }
     }
 
-    mListModel->setImageList(rawList);
+    QSettings settings;
+    QString viewType = settings.value("selected_view_type", "").toString();
+    if(viewType.isEmpty()) viewType = "List view";
+    setLayoutType(viewType);
 }
 
 void GalleryWidget::setLayoutType(const QString& layoutType) {
