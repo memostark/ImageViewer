@@ -68,30 +68,45 @@ void GalleryWidget::updateList(const QString& folderPath) {
 void GalleryWidget::setLayoutType(const QString& layoutType) {
     QListView* listView = ui->listView;
 
+    std::vector<Image *> newList;
+    for (auto image: rawList) {
+        newList.push_back(new Image(*image));
+    }
+
     if (layoutType == "Grid view") {
         listView->setFlow(QListView::LeftToRight);
         listView->setViewMode(QListView::IconMode);
         int size = realListWidth / 3 - 1;
         listView->setGridSize(QSize(size, size));
         listView->setWrapping(true);
-        mListModel->setImageList(rawList);
+        calculateListSize(newList, size);
     } else if (layoutType == "Collage view") {
         listView->setViewMode(QListView::ListMode);
         listView->setGridSize(QSize(-1, -1));
         listView->setFlow(QListView::LeftToRight);
         listView->setWrapping(true);
-        std::vector<Image *> collageList;
-        for (auto image: rawList) {
-            collageList.push_back(new Image(*image));
-        }
-        calculateCollageSizes(collageList);
-        mListModel->setImageList(collageList);
+        calculateCollageSizes(newList);
     } else {
         listView->setFlow(QListView::TopToBottom);
         listView->setViewMode(QListView::ListMode);
         listView->setGridSize(QSize(-1, -1));
         ui->listView->setWrapping(false);
-        mListModel->setImageList(rawList);
+        calculateListSize(newList, realListWidth);
+    }
+
+    mListModel->setImageList(newList);
+}
+
+void GalleryWidget::calculateListSize(std::vector<Image*>& list, int columnWidth) {
+
+    for (auto image: list){
+        if (image->width() > columnWidth) {
+            float ratio = static_cast<float>(image->width()) / static_cast<float>(image->height());;
+            int newHeight = columnWidth / ratio;
+
+            image->setWidth(columnWidth);
+            image->setHeight(newHeight);
+        }
     }
 }
 

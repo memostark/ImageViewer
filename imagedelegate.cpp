@@ -16,7 +16,7 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QString path = index.model()->data(index, Qt::DisplayRole).toString();
 
     QPixmap original(path);
-    QSize size = calculateSize(option.rect.width(), original.size());
+    QSize size = index.model()->data(index, Qt::SizeHintRole).value<QSize>();
 
     QPixmap pixmap = original.scaled(size);
     painter->drawPixmap(option.rect.x(), option.rect.y(), pixmap);
@@ -26,19 +26,5 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
 QSize ImageDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QSize size = index.model()->data(index, Qt::SizeHintRole).value<QSize>();
-    return calculateSize(option.rect.width(), size);
-}
-
-QSize ImageDelegate::calculateSize(int columnWidth, QSize imageSize) const {
-    QSize size;
-    if (imageSize.width() > columnWidth) {
-        float ratio = static_cast<float>(imageSize.width()) / static_cast<float>(imageSize.height());;
-        int newHeight = columnWidth / ratio;
-        size = QSize(columnWidth, newHeight);
-    } else {
-        size = QSize(imageSize.width(), imageSize.height());
-    }
-
-    return size;
+    return index.model()->data(index, Qt::SizeHintRole).value<QSize>();
 }
