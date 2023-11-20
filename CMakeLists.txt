@@ -14,12 +14,12 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        mainwindow.cpp mainwindow.h mainwindow.ui
         resources.qrc
         gallerywidget.h gallerywidget.cpp gallerywidget.ui
         imagedelegate.h imagedelegate.cpp
+        image.h image.cpp
+        imagemodel.h imagemodel.cpp
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,6 +1,7 @@
 #ifndef GALLERYWIDGET_H
 #define GALLERYWIDGET_H
 
+#include "imagemodel.h"
 #include <QWidget>
 #include <QStringListModel>
 
@@ -22,11 +23,18 @@ public slots:
 
 private:
     Ui::GalleryWidget *ui;
-    QStringListModel* mListModel;
+    ImageModel* mListModel;
+    std::vector<Image*> rawList;
 
     int realListWidth;
 
     void resizeEvent(QResizeEvent *event);
+
+    void calculateListSize(std::vector<Image*>& list, int columnWidth);
+    void calculateCollageSizes(std::vector<Image*>& list);
+    Image* updateSize (Image* image);
+    float getAspectRatio(QSize& size);
+    void normalizeHeights(std::vector<Image *>& images, int count, int startIndex, float height);
 };
 
 #endif // GALLERYWIDGET_H

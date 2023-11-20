@@ -22,11 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings settings;
     QString path = settings.value("main_path").toString();
     qDebug() << "Saved path:" << path;
-    if (!path.isNull()) {
-        ui->pathLabel->setText(path);
-        emit folderChanged(path);
-    }
-
+    ui->pathLabel->setText(path);
 
     // Set the saved view preference
     QButtonGroup* group = ui->viewsButtonGroup;
