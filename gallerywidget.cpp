@@ -23,13 +23,14 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
     ui->listView->setItemDelegate(new ImageDelegate(this));
 
     ui->listView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    ui->listView ->verticalScrollBar()->setSingleStep(25);
-
+    ui->listView->verticalScrollBar()->setSingleStep(25);
+    ui->listView->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { width: 20px; }");
+    ui->listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void GalleryWidget::resizeEvent(QResizeEvent *event) {
     QListView* listView = ui->listView;
-    realListWidth = listView->width() - listView->verticalScrollBar()->width();
+    realListWidth = listView->contentsRect().width() - 20;
 
     QSettings settings;
     QString path = settings.value("main_path").toString();
