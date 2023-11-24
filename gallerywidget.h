@@ -28,7 +28,7 @@ private:
 
     int realListWidth;
 
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 
     void calculateListSize(std::vector<Image*>& list, int columnWidth);
     void calculateCollageSizes(std::vector<Image*>& list);
