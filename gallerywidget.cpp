@@ -78,6 +78,7 @@ void GalleryWidget::setLayoutType(const QString& layoutType) {
     for (auto image: rawList) {
         newList.push_back(new Image(*image));
     }
+    mListModel->resetThumbnails();
 
     if (layoutType == "Grid view") {
         listView->setFlow(QListView::LeftToRight);
@@ -113,6 +114,8 @@ void GalleryWidget::calculateListSize(std::vector<Image*>& list, int columnWidth
             image->setWidth(columnWidth);
             image->setHeight(newHeight);
         }
+        auto path = QString::fromStdString(image->fileUrl());
+        mListModel->generateThumbnail(path, QSize(image->width(), image->height()));
     }
 }
 
@@ -168,5 +171,8 @@ void GalleryWidget::normalizeHeights(std::vector<Image *>& images, int count, in
         int width = height * getAspectRatio(size);
         image->setWidth(width);
         image->setHeight(height);
+
+        auto path = QString::fromStdString(image->fileUrl());
+        mListModel->generateThumbnail(path, QSize(width, height));
     }
 }

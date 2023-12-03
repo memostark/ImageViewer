@@ -3,7 +3,9 @@
 #define IMAGEMODEL_H
 
 #include "image.h"
+#include "qsize.h"
 #include <QAbstractListModel>
+#include <QPixmap>
 
 
 
@@ -18,10 +20,13 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void setImageList(std::vector<Image*> newImages);
+    void resetThumbnails();
+    void generateThumbnail(QString filePath, QSize size);
 private:
     bool isIndexValid(const QModelIndex& index) const;
 
     std::vector<Image*> images;
+    QHash<QString, QPixmap*> mThumbnails;
 };
 
 #endif // IMAGEMODEL_H
