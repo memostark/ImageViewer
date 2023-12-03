@@ -1,10 +1,10 @@
 
 #include "imagemodel.h"
-#include "qsize.h"
 
 
 ImageModel::ImageModel(QObject *parent) :
-    images{}
+    images{},
+    mThumbnails()
 {
 
 }
@@ -25,7 +25,11 @@ QVariant ImageModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         return QString::fromStdString(picture.fileUrl());
         break;
-
+    case Qt::DecorationRole: {
+        auto filepath = QString::fromStdString(picture.fileUrl());
+        return *mThumbnails[filepath];
+        break;
+    }
     case Qt::SizeHintRole:
         return QSize(picture.width(), picture.height()) ;
         break;
@@ -48,6 +52,20 @@ void ImageModel::setImageList(std::vector<Image*> newImages)
     beginResetModel();
     images = newImages;
     endResetModel();
+}
+
+void ImageModel::resetThumbnails()
+{
+    qDeleteAll(mThumbnails);
+    mThumbnails.clear();
+}
+
+void ImageModel::generateThumbnail(QString filePath, QSize size)
+{
+    QPixmap original(filePath);
+    auto thumbnail = new QPixmap(original.scaled(size));
+    qDebug() << "Thumbnail path:" << filePath << thumbnail;
+    mThumbnails.insert(filePath, thumbnail);
 }
 
 bool ImageModel::isIndexValid(const QModelIndex& index) const

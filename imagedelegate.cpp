@@ -13,12 +13,7 @@ void ImageDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 {
     painter->save();
 
-    QString path = index.model()->data(index, Qt::DisplayRole).toString();
-
-    QPixmap original(path);
-    QSize size = index.model()->data(index, Qt::SizeHintRole).value<QSize>();
-
-    QPixmap pixmap = original.scaled(size);
+    QPixmap pixmap = index.model()->data(index, Qt::DecorationRole).value<QPixmap>();
     painter->drawPixmap(option.rect.x(), option.rect.y(), pixmap);
 
     painter->restore();
