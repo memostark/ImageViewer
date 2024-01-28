@@ -33,12 +33,6 @@ void GalleryWidget::resizeEvent(QResizeEvent *event) {
     QListView* listView = ui->listView;
     realListWidth = listView->contentsRect().width() - listView->verticalScrollBar()->sizeHint().width();
 
-    QSettings settings;
-    QString path = settings.value("main_path").toString();
-    if (!path.isNull()) {
-        updateList(path);
-    }
-
     qDebug() << "List width:" << listView->width();
     qDebug() << "Scrollbar width:" << listView->verticalScrollBar()->sizeHint().width();
 }

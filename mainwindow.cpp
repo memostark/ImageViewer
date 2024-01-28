@@ -64,3 +64,18 @@ void MainWindow::setFolderPath(){
         settings.setValue("main_path", directory);
     }
 }
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    qDebug() << "MainWindow::showEvent";
+    qDebug() << "instantanuos:" << event->spontaneous();
+    // Spontanous is true after the initial show event, ignore
+    if (event->spontaneous()) return;
+
+    QSettings settings;
+    QString path = settings.value("main_path").toString();
+    if (!path.isNull()) {
+        // Timer with a zero interval fires after all qt queue events are processed (the window is visible)
+        QTimer::singleShot(0, this, [path, this] () { ui->galleryWidget->updateList(path); });
+    }
+}
