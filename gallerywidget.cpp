@@ -45,24 +45,8 @@ GalleryWidget::~GalleryWidget()
 void GalleryWidget::updateList(const QString& folderPath) {
     qDebug() << "Update gallery list called" << folderPath;
     rawList.clear();
-    // load the urls and update the listmodel
-    for (const auto & entry : fs::directory_iterator(folderPath.toStdString())) {
-        if (!entry.is_directory()) {
-            auto path = QString::fromStdString(entry.path().string());
-            QImageReader reader(path);
 
-            if(!reader.format().isEmpty()){
-                qDebug() << path;
-                auto original = reader.size();
-                rawList.push_back(new Image(entry.path().string(), original.width(), original.height()));
-            }
-        }
-    }
-
-    QSettings settings;
-    QString viewType = settings.value("selected_view_type", "").toString();
-    if(viewType.isEmpty()) viewType = "List view";
-    setLayoutType(viewType);
+    QFuture<void> future = QtConcurrent::run(&GalleryWidget::createList, this, folderPath);
 }
 
 void GalleryWidget::setLayoutType(const QString& layoutType) {
@@ -96,6 +80,28 @@ void GalleryWidget::setLayoutType(const QString& layoutType) {
     }
 
     mListModel->setImageList(newList);
+}
+
+void GalleryWidget::createList(const QString &folderPath)
+{
+    // load the urls and update the listmodel
+    for (const auto & entry : fs::directory_iterator(folderPath.toStdString())) {
+        if (!entry.is_directory()) {
+            auto path = QString::fromStdString(entry.path().string());
+            QImageReader reader(path);
+
+            if(!reader.format().isEmpty()){
+                qDebug() << path;
+                auto original = reader.size();
+                rawList.push_back(new Image(entry.path().string(), original.width(), original.height()));
+            }
+        }
+    }
+
+    QSettings settings;
+    QString viewType = settings.value("selected_view_type", "").toString();
+    if(viewType.isEmpty()) viewType = "List view";
+    setLayoutType(viewType);
 }
 
 void GalleryWidget::calculateListSize(std::vector<Image*>& list, int columnWidth) {

@@ -75,7 +75,6 @@ void MainWindow::showEvent(QShowEvent *event)
     QSettings settings;
     QString path = settings.value("main_path").toString();
     if (!path.isNull()) {
-        // Timer with a zero interval fires after all qt queue events are processed (the window is visible)
-        QTimer::singleShot(0, this, [path, this] () { ui->galleryWidget->updateList(path); });
+        ui->galleryWidget->updateList(path);
     }
 }

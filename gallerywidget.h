@@ -4,6 +4,7 @@
 #include "imagemodel.h"
 #include <QWidget>
 #include <QStringListModel>
+#include <QtConcurrent>
 
 namespace Ui {
 class GalleryWidget;
@@ -30,6 +31,7 @@ private:
 
     void resizeEvent(QResizeEvent *event) override;
 
+    void createList(const QString& folderPath);
     void calculateListSize(std::vector<Image*>& list, int columnWidth);
     void calculateCollageSizes(std::vector<Image*>& list);
     Image* updateSize (Image* image);

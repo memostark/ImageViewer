@@ -2,7 +2,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "qtimer.h"
 #include "qevent.h"
 
 #include <QMainWindow>
