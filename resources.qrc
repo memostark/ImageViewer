@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>res/icons/folder.png</file>
         <file>res/placeholder-image.png</file>
+        <file>res/icons/loading-icon.gif</file>
     </qresource>
 </RCC>

@@ -2,6 +2,8 @@
 #define GALLERYWIDGET_H
 
 #include "imagemodel.h"
+#include "qlabel.h"
+#include <QMovie>
 #include <QWidget>
 #include <QStringListModel>
 #include <QtConcurrent>
@@ -24,6 +26,8 @@ public slots:
 
 private:
     Ui::GalleryWidget *ui;
+    QLabel* loadingIcon;
+    QMovie* loadingMovie;
     ImageModel* mListModel;
     std::vector<Image*> rawList;
 

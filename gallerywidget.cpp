@@ -26,6 +26,11 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
     ui->listView->verticalScrollBar()->setSingleStep(25);
     ui->listView->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { width: 20px; }");
     ui->listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    loadingIcon = new QLabel(this);
+    loadingMovie = new QMovie(":/res/icons/loading-icon.gif");
+    loadingIcon->setMovie(loadingMovie);
+    loadingMovie->start();
 }
 
 void GalleryWidget::resizeEvent(QResizeEvent *event) {
@@ -35,6 +40,11 @@ void GalleryWidget::resizeEvent(QResizeEvent *event) {
 
     qDebug() << "List width:" << listView->width();
     qDebug() << "Scrollbar width:" << listView->verticalScrollBar()->sizeHint().width();
+
+    QSize loadingSize = loadingMovie->currentPixmap().size();
+    int xPos = (this->width() - loadingSize.width()) / 2;
+    int yPos = (this->height() - loadingSize.height()) / 2;
+    loadingIcon->setGeometry(xPos, yPos, loadingSize.width(), loadingSize.height());
 }
 
 GalleryWidget::~GalleryWidget()
