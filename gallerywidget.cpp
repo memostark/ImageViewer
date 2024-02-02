@@ -28,6 +28,7 @@ GalleryWidget::GalleryWidget(QWidget *parent) :
     ui->listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     loadingIcon = new QLabel(this);
+    loadingIcon->setVisible(false);
     loadingMovie = new QMovie(":/res/icons/loading-icon.gif");
     loadingIcon->setMovie(loadingMovie);
     loadingMovie->start();
@@ -54,9 +55,13 @@ GalleryWidget::~GalleryWidget()
 
 void GalleryWidget::updateList(const QString& folderPath) {
     qDebug() << "Update gallery list called" << folderPath;
+    loadingIcon->setVisible(true);
     rawList.clear();
 
     QFuture<void> future = QtConcurrent::run(&GalleryWidget::createList, this, folderPath);
+    future.then([this](){
+        loadingIcon->setVisible(false);
+    });
 }
 
 void GalleryWidget::setLayoutType(const QString& layoutType) {
