@@ -35,12 +35,12 @@ private:
 
     void resizeEvent(QResizeEvent *event) override;
 
-    void createList(const QString& folderPath);
-    void calculateListSize(std::vector<Image*>& list, int columnWidth);
-    void calculateCollageSizes(std::vector<Image*>& list);
+    void readImagesData(const QString& folderPath);
+    QFuture<void> calculateListSize(std::vector<Image*>& list, int columnWidth);
+    QFuture<void> calculateCollageSizes(std::vector<Image*>& list);
     Image* updateSize (Image* image);
     float getAspectRatio(QSize& size);
-    void normalizeHeights(std::vector<Image *>& images, int count, int startIndex, float height);
+    void normalizeHeights(const std::vector<Image *>& images, int count, int startIndex, float height);
 };
 
 #endif // GALLERYWIDGET_H
