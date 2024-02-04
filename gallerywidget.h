@@ -29,6 +29,7 @@ private:
     QLabel* loadingIcon;
     QMovie* loadingMovie;
     ImageModel* mListModel;
+    QFuture<void> calculateSizesFuture;
     std::vector<Image*> rawList;
 
     int realListWidth;

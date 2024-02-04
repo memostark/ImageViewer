@@ -68,6 +68,8 @@ void GalleryWidget::updateList(const QString& folderPath) {
 }
 
 void GalleryWidget::setLayoutType(const QString& layoutType) {
+    calculateSizesFuture.cancel();
+
     loadingIcon->setVisible(true);
     QListView* listView = ui->listView;
 
@@ -76,8 +78,6 @@ void GalleryWidget::setLayoutType(const QString& layoutType) {
         newList.push_back(new Image(*image));
     }
     mListModel->resetThumbnails();
-
-    QFuture<void> calculateSizesFuture;
 
     if (layoutType == "Grid view") {
         listView->setFlow(QListView::LeftToRight);
@@ -124,8 +124,10 @@ void GalleryWidget::readImagesData(const QString &folderPath)
 
 QFuture<void> GalleryWidget::calculateListSize(std::vector<Image*>& list, int columnWidth) {
 
-    return QtConcurrent::run([this, list, columnWidth]{
+    return QtConcurrent::run([this, list, columnWidth](QPromise<void>& promise){
         for (auto image: list){
+            if(promise.isCanceled()) return;
+
             if (image->width() > columnWidth) {
                 float ratio = static_cast<float>(image->width()) / static_cast<float>(image->height());;
                 int newHeight = columnWidth / ratio;
@@ -144,7 +146,7 @@ float arMax = 3.0f;
 
 QFuture<void> GalleryWidget::calculateCollageSizes(std::vector<Image*>& list) {
 
-    return QtConcurrent::run([this, list]{
+    return QtConcurrent::run([this, list](QPromise<void>& promise){
         float arSum = 0;
         float width = static_cast<float>(realListWidth);
 
@@ -154,6 +156,7 @@ QFuture<void> GalleryWidget::calculateCollageSizes(std::vector<Image*>& list) {
         int i = 0;
 
         for (auto image: list){
+            if(promise.isCanceled()) return;
 
             QSize size = QSize(image->width(), image->height());
             float ratio = getAspectRatio(size);

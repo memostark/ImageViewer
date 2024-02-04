@@ -35,10 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
                 button->setChecked(true);
     }
 
-    connect(group, &QButtonGroup::buttonClicked,
+    connect(group, &QButtonGroup::buttonClicked, this,
             [this, group](QAbstractButton *button)
             {
-                qDebug() << group->id(button);
                 auto text = button->text();
                 QSettings settings;
                 settings.setValue("selected_view_type", text);
