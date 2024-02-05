@@ -2,6 +2,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "qevent.h"
+
 #include <QMainWindow>
 
 
@@ -28,6 +30,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+protected:
+    void showEvent(QShowEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

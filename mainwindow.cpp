@@ -35,10 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
                 button->setChecked(true);
     }
 
-    connect(group, &QButtonGroup::buttonClicked,
+    connect(group, &QButtonGroup::buttonClicked, this,
             [this, group](QAbstractButton *button)
             {
-                qDebug() << group->id(button);
                 auto text = button->text();
                 QSettings settings;
                 settings.setValue("selected_view_type", text);
@@ -62,5 +61,19 @@ void MainWindow::setFolderPath(){
         emit folderChanged(directory);
         QSettings settings;
         settings.setValue("main_path", directory);
+    }
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    qDebug() << "MainWindow::showEvent";
+    qDebug() << "instantanuos:" << event->spontaneous();
+    // Spontanous is true after the initial show event, ignore
+    if (event->spontaneous()) return;
+
+    QSettings settings;
+    QString path = settings.value("main_path").toString();
+    if (!path.isNull()) {
+        ui->galleryWidget->updateList(path);
     }
 }

@@ -64,7 +64,6 @@ void ImageModel::generateThumbnail(QString filePath, QSize size)
 {
     QPixmap original(filePath);
     auto thumbnail = new QPixmap(original.scaled(size));
-    qDebug() << "Thumbnail path:" << filePath << thumbnail;
     mThumbnails.insert(filePath, thumbnail);
 }
 
